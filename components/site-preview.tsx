@@ -254,7 +254,7 @@ export function SitePreview({
             {[
               ["10+", "év tapasztalat"],
               ["500+", "elégedett ügyfél"],
-              ["4.9★", "értékelés"],
+              ["4.9", "értékelés"],
             ].map(([v, l]) => (
               <div key={l}>
                 <p className="font-bold" style={{ color: "var(--sp-primary)", fontSize: "1.3em" }}>
@@ -422,7 +422,13 @@ export function SitePreview({
                   className="h-full bg-white p-4"
                   style={{ borderRadius: "var(--sp-radius)", border: "1px solid #eef0f4" }}
                 >
-                  <p style={{ color: "var(--sp-accent)" }}>★★★★★</p>
+                  <div className="flex gap-0.5" style={{ color: "var(--sp-accent)" }}>
+                    {Array.from({ length: 5 }).map((_, s) => (
+                      <svg key={s} width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                        <path d="M12 2l2.9 6.1 6.6.9-4.8 4.6 1.2 6.6L12 17.8 6.1 20.8l1.2-6.6L2.5 9l6.6-.9L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
                   <p className="mt-2 italic text-neutral-600">“{r}”</p>
                   <p className="mt-3 text-xs font-semibold text-neutral-800">{refNames[i] ?? "Elégedett ügyfél"}</p>
                 </div>
@@ -499,24 +505,62 @@ export function SitePreview({
                 Lépjen kapcsolatba velünk
               </h2>
               <p className="mt-2 opacity-90">Kérdése van? Küldjön üzenetet, vagy hívjon minket bizalommal.</p>
-              <div className="mt-4 space-y-1.5 opacity-95">
-                {project.contact.phone ? <p>📞 {project.contact.phone}</p> : null}
-                {project.contact.email ? <p>✉ {project.contact.email}</p> : null}
-                {project.contact.address ? <p>📍 {project.contact.address}</p> : null}
-                {project.contact.hours ? <p>🕒 {project.contact.hours}</p> : null}
+              <div className="mt-4 space-y-2 opacity-95">
+                {project.contact.phone ? (
+                  <p className="flex items-center gap-2">
+                    <ContactIcon d="M6.6 10.8a15 15 0 006.6 6.6l2.2-2.2a1 1 0 011-.24 11 11 0 003.4.55 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11 11 0 00.55 3.4 1 1 0 01-.25 1l-2.2 2.4z" />
+                    {project.contact.phone}
+                  </p>
+                ) : null}
+                {project.contact.email ? (
+                  <p className="flex items-center gap-2">
+                    <ContactIcon d="M4 4h16a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1zm0 3.2V19h16V7.2l-8 5-8-5zM18.6 6H5.4l6.6 4.1L18.6 6z" />
+                    {project.contact.email}
+                  </p>
+                ) : null}
+                {project.contact.address ? (
+                  <p className="flex items-center gap-2">
+                    <ContactIcon d="M12 2a7 7 0 017 7c0 5-7 13-7 13S5 14 5 9a7 7 0 017-7zm0 4.5A2.5 2.5 0 1012 11.5 2.5 2.5 0 0012 6.5z" />
+                    {project.contact.address}
+                  </p>
+                ) : null}
+                {project.contact.hours ? (
+                  <p className="flex items-center gap-2">
+                    <ContactIcon d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm1 10.6l3.5 2-.9 1.6L11 13.5V6h2z" />
+                    {project.contact.hours}
+                  </p>
+                ) : null}
               </div>
             </div>
-            <div className="space-y-2 bg-white/10 p-4 backdrop-blur" style={{ borderRadius: "var(--sp-radius)" }}>
-              <div className="h-8 bg-white/80" style={{ borderRadius: "calc(var(--sp-radius) * 0.6)" }} />
-              <div className="h-8 bg-white/80" style={{ borderRadius: "calc(var(--sp-radius) * 0.6)" }} />
-              <div className="h-16 bg-white/80" style={{ borderRadius: "calc(var(--sp-radius) * 0.6)" }} />
+            <form
+              className="space-y-2 bg-white/10 p-4 backdrop-blur"
+              style={{ borderRadius: "var(--sp-radius)" }}
+              onSubmit={(e) => e.preventDefault()}
+            >
+              <input
+                placeholder="Név"
+                className="w-full bg-white/90 px-3 py-2 text-xs text-neutral-800 outline-none placeholder:text-neutral-400"
+                style={{ borderRadius: "calc(var(--sp-radius) * 0.6)" }}
+              />
+              <input
+                placeholder="E-mail cím"
+                className="w-full bg-white/90 px-3 py-2 text-xs text-neutral-800 outline-none placeholder:text-neutral-400"
+                style={{ borderRadius: "calc(var(--sp-radius) * 0.6)" }}
+              />
+              <textarea
+                placeholder="Üzenet"
+                rows={3}
+                className="w-full resize-none bg-white/90 px-3 py-2 text-xs text-neutral-800 outline-none placeholder:text-neutral-400"
+                style={{ borderRadius: "calc(var(--sp-radius) * 0.6)" }}
+              />
               <button
+                type="submit"
                 className="w-full py-2 text-xs font-semibold"
                 style={{ background: "#fff", color: "var(--sp-primary)", borderRadius: "var(--sp-radius)" }}
               >
                 Üzenet küldése
               </button>
-            </div>
+            </form>
           </section>
         </Section>
       ) : null}

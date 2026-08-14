@@ -35,12 +35,13 @@ export default function EducationPage() {
   const { progress } = usePortal()
   const [topic, setTopic] = useState<Topic>("all")
 
-  const courses = useMemo(() => {
-    if (topic === "all") return ALL_COURSES
-    return ALL_COURSES.filter((c) => c.type === topic)
-  }, [topic])
-
   const featured = ALL_COURSES.find((c) => c.type === "ai")!
+
+  const courses = useMemo(() => {
+    if (topic === "all") return ALL_COURSES.filter((c) => c.id !== featured.id)
+    return ALL_COURSES.filter((c) => c.type === topic)
+  }, [topic, featured.id])
+
   const featuredPct = courseProgress(featured, progress)
 
   const totalLessons = ALL_COURSES.reduce((s, c) => s + c.lessons.length, 0)
