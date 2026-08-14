@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-dark: var(--primary-dark);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-teal: var(--teal);
+  --color-azure: var(--azure);
+  --color-violet: var(--violet);
+  --color-gold: var(--gold);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+  --radius-2xl: calc(var(--radius) + 12px);
+}
+
+:root {
+  --radius: 0.875rem;
+
+  --background: #eef1f7;
+  --foreground: #171a21;
+  --card: #ffffff;
+  --card-foreground: #171a21;
+  --muted: #f2f4f9;
+  --muted-foreground: #5b6373;
+  --border: #dfe3ec;
+  --input: #dfe3ec;
+  --ring: #4258ed;
+
+  --primary: #3743d8;
+  --primary-foreground: #ffffff;
+  --primary-dark: #2a2c95;
+
+  --accent: #027671;
+  --accent-foreground: #ffffff;
+
+  --teal: #027671;
+  --azure: #01719d;
+  --violet: #8445db;
+  --gold: #b8791a;
+
+  --success: #0e7a52;
+  --success-foreground: #ffffff;
+  --warning: #b8791a;
+  --danger: #c2374a;
+
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-strong: rgba(255, 255, 255, 0.9);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    background-color: var(--background);
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 22%, transparent);
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: var(--surface);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+  }
+  .glass-strong {
+    background: var(--surface-strong);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  /* frosted / fade-out edges the user described ("előhomályosodó") */
+  .fade-mask-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+  .hairline {
+    box-shadow: inset 0 0 0 1px var(--border);
+  }
+  .elev-1 {
+    box-shadow: 0 1px 2px rgba(23, 26, 33, 0.04), 0 8px 24px -12px rgba(23, 26, 33, 0.12);
+  }
+  .elev-2 {
+    box-shadow: 0 2px 4px rgba(23, 26, 33, 0.05), 0 20px 48px -20px rgba(23, 26, 33, 0.22);
+  }
+  .grid-bg {
+    background-image: linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-rise {
+    animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes floaty {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  .animate-floaty {
+    animation: floaty 6s ease-in-out infinite;
+  }
+}

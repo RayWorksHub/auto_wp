@@ -1,0 +1,476 @@
+import type { Account, Company, Course, Faq, PortalState, SiteProject } from "./types"
+
+export const STORAGE_KEY = "vallalkozoi_portal_next_v1"
+export const VERIFICATION_CODE = "123456"
+
+const demoAccounts: Account[] = [
+  {
+    id: "user-demo",
+    role: "user",
+    name: "Kovács Péter",
+    email: "demo@vallalkozoipro.hu",
+    password: "Demo1234!",
+    verified: true,
+    companyId: "company-demo",
+    createdAt: "2026-07-12T08:30:00.000Z",
+  },
+  {
+    id: "user-admin",
+    role: "admin",
+    name: "Portál Adminisztrátor",
+    email: "admin@vallalkozoipro.hu",
+    password: "Admin1234!",
+    verified: true,
+    companyId: null,
+    createdAt: "2026-06-01T08:00:00.000Z",
+  },
+]
+
+const demoCompany: Company = {
+  id: "company-demo",
+  ownerId: "user-demo",
+  name: "Kovács Klíma Kft.",
+  taxNumber: "29123456-2-42",
+  registrationNumber: "01-09-998877",
+  headquarters: "1117 Budapest, Fehérvári út 38.",
+  phone: "+36 30 555 0148",
+  email: "hello@kovacsklima.hu",
+  website: "https://kovacsklima.hu",
+  activity: "Klímaberendezések telepítése és karbantartása",
+  description:
+    "Lakossági és kisvállalati klímaberendezések szakszerű telepítését, karbantartását és tisztítását végezzük Budapesten és környékén.",
+  contactName: "Kovács Péter",
+  logoUrl: null,
+  createdAt: "2026-07-12T08:45:00.000Z",
+}
+
+const demoProject: SiteProject = {
+  id: "site-demo",
+  ownerId: "user-demo",
+  companyId: "company-demo",
+  status: "draft",
+  currentStep: 1,
+  name: "Kovács Klíma weboldala",
+  slug: "kovacs-klima",
+  template: "modern",
+  primaryColor: "#3743d8",
+  accentColor: "#027671",
+  fontScale: 1,
+  radius: 14,
+  layout: "split",
+  companyName: "Kovács Klíma Kft.",
+  activity: "Klímaberendezések telepítése és karbantartása",
+  shortDescription:
+    "Megbízható klímatechnikai megoldások Budapesten és környékén, gyors kiszállással és garanciával.",
+  heroTitle: "Kellemes hőmérséklet egész évben",
+  heroSubtitle:
+    "Klímatelepítés, karbantartás és tisztítás kiszámítható áron, tapasztalt szakemberektől.",
+  heroImageUrl: null,
+  logoUrl: null,
+  galleryUrls: [],
+  aboutTitle: "Rólunk",
+  aboutText:
+    "Több mint tíz éve segítünk otthonoknak és vállalkozásoknak energiatakarékos, megbízható klímamegoldásokkal. Minden munkánkra írásos garanciát vállalunk.",
+  ctaText: "Kérjen ingyenes felmérést",
+  pages: {
+    home: true,
+    about: true,
+    services: true,
+    references: true,
+    pricing: true,
+    contact: true,
+    blog: false,
+  },
+  services: [
+    {
+      id: "service-1",
+      title: "Klímatelepítés",
+      text: "Helyszíni felmérés, méretezés és szakszerű telepítés rövid határidővel.",
+      price: "149 000 Ft-tól",
+    },
+    {
+      id: "service-2",
+      title: "Karbantartás",
+      text: "Teljes körű szezonális átvizsgálás, fertőtlenítés és teljesítménymérés.",
+      price: "18 900 Ft-tól",
+    },
+    {
+      id: "service-3",
+      title: "Hibaelhárítás",
+      text: "Gyors diagnosztika és javítás Budapesten, kiszámítható kiszállási díjjal.",
+      price: "24 900 Ft-tól",
+    },
+  ],
+  references: ["Irodai klimatizálás – XI. kerület", "Családi ház – Budaörs", "Üzlethelyiség – Belváros"],
+  contact: {
+    phone: "+36 30 555 0148",
+    email: "hello@kovacsklima.hu",
+    address: "1117 Budapest, Fehérvári út 38.",
+    hours: "Hétfő–péntek: 8:00–17:00",
+    showForm: true,
+  },
+  updatedAt: "2026-08-12T14:30:00.000Z",
+  publishedAt: null,
+}
+
+export const COURSES: Course[] = [
+  {
+    id: "startup-basics",
+    type: "startup",
+    title: "Vállalkozás indításának alapjai",
+    shortTitle: "Vállalkozásindítás",
+    level: "Kezdő",
+    duration: "1 óra 25 perc",
+    color: "#3743d8",
+    status: "active",
+    lessonCount: 3,
+    downloadable: "Vállalkozásindítási ellenőrzőlista (PDF)",
+    description:
+      "A legfontosabb első döntések, vállalkozási formák és számlázási alapismeretek egyetlen, követhető tanulási útvonalon.",
+    lessons: [
+      {
+        id: "startup-1",
+        order: 1,
+        title: "Hogyan induljunk el?",
+        duration: "9 perc",
+        description: "Az egyéni vállalkozás indításának áttekintése és az első gyakorlati teendők.",
+        youtubeId: "JF0UWnLkZnI",
+        youtubeUrl: "https://www.youtube.com/watch?v=JF0UWnLkZnI",
+        source: "MKVKOK Információs videók",
+        keyPoints: [
+          "Egyéni vállalkozás bejelentése a webes ügysegéden keresztül, ingyenesen.",
+          "A főállású és mellékállású vállalkozás közötti különbség a járulékfizetésben.",
+          "Az első hónap teendői: bankszámla, könyvelő és a tevékenységi kör (TEÁOR) kiválasztása.",
+        ],
+      },
+      {
+        id: "startup-2",
+        order: 2,
+        title: "Vállalkozási formák",
+        duration: "31 perc",
+        description: "Az alapítás és működtetés leggyakoribb vállalkozási formái, érthető példákkal.",
+        youtubeId: "cE1N5adj3fE",
+        youtubeUrl: "https://www.youtube.com/watch?v=cE1N5adj3fE",
+        source: "Bornemisza Péter Gimnázium",
+        keyPoints: [
+          "Egyéni vállalkozó vs. Kft.: felelősség, alaptőke és adminisztráció összehasonlítása.",
+          "Az átalányadózás és a KATA jellemzői a kisvállalkozók számára.",
+          "Mikor éri meg társas vállalkozásba lépni?",
+        ],
+      },
+      {
+        id: "startup-3",
+        order: 3,
+        title: "A számlázás alapjai",
+        duration: "40 perc",
+        description: "Számlatípusok, alapfogalmak és a szabályos számlakiállítás gyakorlati szempontjai.",
+        youtubeId: "oKYGISXhH-8",
+        youtubeUrl: "https://www.youtube.com/watch?v=oKYGISXhH-8",
+        source: "Számlázz.hu Akadémia",
+        keyPoints: [
+          "A számla kötelező tartalmi elemei az Áfa-törvény szerint.",
+          "Online számla adatszolgáltatás a NAV felé (Online Számla rendszer).",
+          "Díjbekérő, előlegszámla és végszámla használata a gyakorlatban.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "customer-acquisition",
+    type: "startup",
+    title: "Az első ügyfelek megszerzése",
+    shortTitle: "Ügyfélszerzés",
+    level: "Kezdő",
+    duration: "45 perc",
+    color: "#01719d",
+    status: "coming-soon",
+    lessonCount: 4,
+    downloadable: null,
+    description: "Piacfelmérés, ajánlatalkotás és egyszerű ügyfélszerzési terv induló vállalkozásoknak.",
+    lessons: [],
+  },
+  {
+    id: "online-presence",
+    type: "startup",
+    title: "Webes jelenlét és adatvédelem",
+    shortTitle: "Webes jelenlét",
+    level: "Középhaladó",
+    duration: "1 óra",
+    color: "#8445db",
+    status: "coming-soon",
+    lessonCount: 5,
+    downloadable: null,
+    description: "Weboldal, közösségi felületek, alapvető adatvédelmi és tartalomkezelési feladatok.",
+    lessons: [],
+  },
+]
+
+export const AI_COURSES: Course[] = [
+  {
+    id: "ai-basics",
+    type: "ai",
+    title: "Mesterséges intelligencia a vállalkozásban",
+    shortTitle: "MI a vállalkozásban",
+    level: "Kezdő",
+    duration: "1 óra 10 perc",
+    color: "#8445db",
+    status: "active",
+    lessonCount: 4,
+    downloadable: "MI prompt-gyűjtemény vállalkozóknak (PDF)",
+    description:
+      "Gyakorlati bevezető az MI eszközök használatába: szövegírás, ügyfélkommunikáció, ajánlatok és képgenerálás a mindennapi vállalkozói munkában.",
+    lessons: [
+      {
+        id: "ai-1",
+        order: 1,
+        title: "Mi az a generatív MI és mire jó?",
+        duration: "14 perc",
+        description: "A nagy nyelvi modellek (ChatGPT, Gemini, Copilot) alapfogalmai érthetően, üzleti szemmel.",
+        youtubeId: "JTxsNm9IdYU",
+        youtubeUrl: "https://www.youtube.com/results?search_query=mesters%C3%A9ges+intelligencia+v%C3%A1llalkoz%C3%A1s+magyar",
+        source: "Cserélhető YouTube-hely",
+        keyPoints: [
+          "Mi a különbség a keresőmotor és a generatív MI között?",
+          "Milyen feladatokra megbízható az MI, és mikor kell emberi ellenőrzés?",
+          "Ingyenes és fizetős eszközök: mit érdemes egy kisvállalkozónak választani.",
+        ],
+      },
+      {
+        id: "ai-2",
+        order: 2,
+        title: "Jó utasítások (promptok) írása",
+        duration: "18 perc",
+        description: "Hogyan kérjünk pontos, használható választ az MI-től? A prompt felépítése lépésről lépésre.",
+        youtubeId: null,
+        youtubeUrl: "https://www.youtube.com/results?search_query=prompt+%C3%ADr%C3%A1s+ChatGPT+magyar",
+        source: "Cserélhető YouTube-hely",
+        keyPoints: [
+          "A jó prompt négy eleme: szerep, feladat, kontextus, formátum.",
+          "Példa: „Írj egy udvarias árajánlat-kísérő emailt egy klímatelepítéshez.”",
+          "Iteráció: hogyan finomítsuk a választ visszajelzésekkel.",
+        ],
+      },
+      {
+        id: "ai-3",
+        order: 3,
+        title: "Ügyfélkommunikáció és szövegírás MI-vel",
+        duration: "20 perc",
+        description: "Ajánlatok, közösségi média posztok és ügyfélválaszok gyorsabb elkészítése MI segítségével.",
+        youtubeId: null,
+        youtubeUrl: "https://www.youtube.com/results?search_query=ChatGPT+marketing+sz%C3%B6veg%C3%ADr%C3%A1s+magyar",
+        source: "Cserélhető YouTube-hely",
+        keyPoints: [
+          "Facebook- és Google-hirdetésszövegek vázlatának elkészítése.",
+          "Gyakori ügyfélkérdésekre sablonválaszok generálása és testreszabása.",
+          "Adatvédelem: mit NE osszunk meg az MI eszközökkel (személyes és üzleti adatok).",
+        ],
+      },
+      {
+        id: "ai-4",
+        order: 4,
+        title: "Képek és arculat MI-vel",
+        duration: "18 perc",
+        description: "Egyszerű logó- és képötletek, közösségi média vizuálok készítése képgeneráló eszközökkel.",
+        youtubeId: null,
+        youtubeUrl: "https://www.youtube.com/results?search_query=AI+k%C3%A9pgener%C3%A1l%C3%A1s+magyar",
+        source: "Cserélhető YouTube-hely",
+        keyPoints: [
+          "Képgeneráló eszközök áttekintése és a szerzői jogi alapok.",
+          "Egységes arculat: színek és stílus következetes használata.",
+          "A weboldalvarázslóban feltölthető képek előkészítése.",
+        ],
+      },
+    ],
+  },
+]
+
+export const OFFICE_TRACKS: Course[] = [
+  {
+    id: "excel-basics",
+    type: "office",
+    product: "Microsoft Excel",
+    title: "Excel alapok vállalkozóknak",
+    level: "Kezdő",
+    duration: "1 óra 20 perc",
+    color: "#0e7a52",
+    status: "active",
+    lessonCount: 3,
+    downloadable: "Ügyfélnyilvántartó sablon (CSV)",
+    description: "Ügyféllista, bevétel-kiadás nyilvántartás és alapvető képletek a napi működéshez.",
+    lessons: [
+      {
+        id: "excel-1",
+        order: 1,
+        title: "Munkafüzet, munkalap és cellák",
+        duration: "20 perc",
+        description: "Az Excel felépítése, adatbevitel és a legfontosabb kezelési alapok.",
+        youtubeId: "-9_iMECopjY",
+        youtubeUrl: "https://www.youtube.com/watch?v=-9_iMECopjY",
+        source: "video LCZ",
+        keyPoints: [
+          "Cellahivatkozások és a munkalapok közötti navigáció.",
+          "Adatbevitel, automatikus kitöltés és a másolás-beillesztés fortélyai.",
+          "Az első bevételi táblázat felépítése.",
+        ],
+      },
+      {
+        id: "excel-2",
+        order: 2,
+        title: "Adattípusok és számformátumok",
+        duration: "24 perc",
+        description: "Dátumok, pénznemek, százalékok és üzleti adatok helyes formázása.",
+        youtubeId: "UoUYmrcYMeU",
+        youtubeUrl: "https://www.youtube.com/watch?v=UoUYmrcYMeU",
+        source: "video LCZ",
+        keyPoints: [
+          "Pénznem- és dátumformátumok beállítása magyar szabvány szerint.",
+          "Százalékszámítás árréshez és kedvezményekhez.",
+          "Feltételes formázás a kiugró értékek kiemelésére.",
+        ],
+      },
+      {
+        id: "excel-3",
+        order: 3,
+        title: "Egyszerű függvények és SZUM",
+        duration: "36 perc",
+        description: "A leggyakrabban használt összesítések egy bevételi táblázaton bemutatva.",
+        youtubeId: "Txgk6TdH6f8",
+        youtubeUrl: "https://www.youtube.com/watch?v=Txgk6TdH6f8",
+        source: "Magyar Excel oktatóvideó",
+        keyPoints: [
+          "SZUM, ÁTLAG, DARAB függvények a napi könyveléshez.",
+          "HA függvény egyszerű döntésekhez (pl. fizetve / nem fizetve).",
+          "Havi bevétel-kiadás kimutatás összeállítása.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "word-documents",
+    type: "office",
+    product: "Microsoft Word",
+    title: "Üzleti dokumentumok Wordben",
+    level: "Kezdő",
+    duration: "55 perc",
+    color: "#2457a7",
+    status: "active",
+    lessonCount: 3,
+    downloadable: "Árajánlat-sablon (DOCX)",
+    description: "Árajánlatok, szerződésminták és egységes céges dokumentumok létrehozása.",
+    lessons: [
+      {
+        id: "word-1",
+        order: 1,
+        title: "Egységes dokumentumstílus",
+        duration: "18 perc",
+        description: "Címsorok, margók és céges arculati elemek következetes használata.",
+        youtubeId: null,
+        youtubeUrl: "https://www.youtube.com/results?search_query=Microsoft+Word+alapok+magyar",
+        source: "Cserélhető YouTube-hely",
+        keyPoints: [
+          "Stílusok használata a gyors és egységes formázáshoz.",
+          "Céges fejléc és lábléc beállítása logóval.",
+          "Sablon mentése újrahasználáshoz.",
+        ],
+      },
+      {
+        id: "word-2",
+        order: 2,
+        title: "Árajánlat-sablon készítése",
+        duration: "22 perc",
+        description: "Újrahasználható ajánlati sablon vállalkozási adatokkal.",
+        youtubeId: null,
+        youtubeUrl: "https://www.youtube.com/results?search_query=Word+sablon+k%C3%A9sz%C3%ADt%C3%A9s+magyar",
+        source: "Cserélhető YouTube-hely",
+        keyPoints: [
+          "Táblázatos tétellista árakkal és összesítéssel.",
+          "Automatikus mezők: dátum, ajánlatszám, érvényesség.",
+          "Professzionális megjelenés kevés eszközzel.",
+        ],
+      },
+      {
+        id: "word-3",
+        order: 3,
+        title: "Körlevél alapjai",
+        duration: "15 perc",
+        description: "Személyre szabott ügyféllevelek készítése Excel-adatforrásból.",
+        youtubeId: null,
+        youtubeUrl: "https://www.youtube.com/results?search_query=Word+k%C3%B6rlev%C3%A9l+magyar",
+        source: "Cserélhető YouTube-hely",
+        keyPoints: [
+          "Adatforrás összekapcsolása Excel-táblával.",
+          "Személyre szabott megszólítás beszúrása.",
+          "Tömeges nyomtatás és e-mail küldés.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "powerpoint-offers",
+    type: "office",
+    product: "Microsoft PowerPoint",
+    title: "Hatásos üzleti prezentációk",
+    level: "Középhaladó",
+    duration: "50 perc",
+    color: "#b7472a",
+    status: "coming-soon",
+    lessonCount: 4,
+    downloadable: null,
+    description: "Rövid, meggyőző ajánlati prezentációk felépítése és egységes megjelenése.",
+    lessons: [],
+  },
+  {
+    id: "outlook-workflow",
+    type: "office",
+    product: "Microsoft Outlook",
+    title: "Levelezés és naptár rendszerezése",
+    level: "Kezdő",
+    duration: "45 perc",
+    color: "#1769aa",
+    status: "coming-soon",
+    lessonCount: 4,
+    downloadable: null,
+    description: "Mappák, szabályok, sablonválaszok és időpontkezelés a rendezett ügyfélkommunikációért.",
+    lessons: [],
+  },
+]
+
+export const ALL_COURSES: Course[] = [...COURSES, ...AI_COURSES, ...OFFICE_TRACKS]
+
+export const FAQS: Faq[] = [
+  {
+    question: "Valódi ügyintézési rendszer ez?",
+    answer:
+      "Ez egy teljesen interaktív koncepciódemó. A felületi folyamatok működnek, de az adatok csak az adott böngészőben tárolódnak, és nem kerülnek hatósági rendszerbe.",
+  },
+  {
+    question: "A weboldalvarázsló valóban készít weboldalt?",
+    answer:
+      "Igen. A beállítások alapján élő előnézetet készít, amely azonnal frissül. Valódi publikáláshoz külön szerveroldali integráció szükséges.",
+  },
+  {
+    question: "Feltölthetek saját képeket és logót?",
+    answer:
+      "Igen. A profilban és a weboldalvarázslóban valódi képfeltöltés érhető el, a feltöltött fájlok biztonságos tárhelyre kerülnek.",
+  },
+  {
+    question: "Működnek a videók?",
+    answer:
+      "Az aktív leckék ellenőrzött, nyilvános YouTube-hivatkozásokat használnak. A videó a felületen belül és új ablakban is megnyitható.",
+  },
+  {
+    question: "Megmaradnak a módosításaim?",
+    answer:
+      "Igen, ugyanabban a böngészőben. A demó a böngésző tárhelyét használja, ezért a böngészőadatok törlése a mentéseket is eltávolítja.",
+  },
+]
+
+export function buildInitialState(): PortalState {
+  return {
+    accounts: demoAccounts.map((a) => ({ ...a })),
+    companies: [{ ...demoCompany }],
+    projects: [{ ...demoProject }],
+    progress: { "user-demo": { "startup-1": true, "startup-2": true, "excel-1": true } },
+    currentUserId: null,
+  }
+}
