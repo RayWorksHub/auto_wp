@@ -2,9 +2,10 @@
 
 import { useState } from "react"
 import { usePortal } from "@/components/portal-provider"
-import { SitePreview } from "@/components/site-preview"
+import { DevicePreview, type Device } from "@/components/device-preview"
 import { ImageUploader } from "@/components/image-uploader"
 import { Icon } from "@/components/icons"
+import { extractPalette } from "@/lib/color"
 import { cn } from "@/lib/utils"
 import type { ServiceItem, SiteProject } from "@/lib/types"
 
@@ -32,9 +33,18 @@ const COLOR_PRESETS = [
 const field =
   "w-full rounded-lg border border-input bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-ring/30"
 
+const DEVICES: { id: Device; icon: keyof typeof Icon; label: string }[] = [
+  { id: "desktop", icon: "monitor", label: "Asztali" },
+  { id: "tablet", icon: "tablet", label: "Tablet" },
+  { id: "mobile", icon: "phone", label: "Mobil" },
+]
+
 export default function WebsiteBuilderPage() {
   const { currentProject, updateProject } = usePortal()
   const [previewOpen, setPreviewOpen] = useState(false)
+  const [device, setDevice] = useState<Device>("desktop")
+  const [extracting, setExtracting] = useState(false)
+  const [paletteMsg, setPaletteMsg] = useState<string | null>(null)
 
   if (!currentProject) return null
   const p = currentProject
@@ -50,10 +60,53 @@ export default function WebsiteBuilderPage() {
     updateProject({ services: p.services.map((s) => (s.id === id ? { ...s, ...patch } : s)) })
   const removeService = (id: string) => updateProject({ services: p.services.filter((s) => s.id !== id) })
 
+  const addReference = () => updateProject({ references: [...p.references, "Kiváló munka, csak ajánlani tudom!"] })
+  const updateReference = (i: number, val: string) =>
+    updateProject({ references: p.references.map((r, idx) => (idx === i ? val : r)) })
+  const removeReference = (i: number) =>
+    updateProject({ references: p.references.filter((_, idx) => idx !== i) })
+
   const togglePage = (key: keyof SiteProject["pages"]) =>
     updateProject({ pages: { ...p.pages, [key]: !p.pages[key] } })
 
   const publish = () => updateProject({ status: "published", publishedAt: new Date().toISOString(), currentStep: 4 })
+
+  const grabLogoColors = async () => {
+    if (!p.logoUrl) return
+    setExtracting(true)
+    setPaletteMsg(null)
+    const palette = await extractPalette(p.logoUrl)
+    setExtracting(false)
+    if (palette) {
+      updateProject({ primaryColor: palette.primary, accentColor: palette.accent })
+      setPaletteMsg("Színek beállítva a logó alapján.")
+    } else {
+      setPaletteMsg("Nem sikerült színt kinyerni ebből a logóból.")
+    }
+  }
+
+  const DeviceToggle = ({ compact = false }: { compact?: boolean }) => (
+    <div className="inline-flex items-center gap-1 rounded-lg border border-border bg-card p-1">
+      {DEVICES.map((d) => {
+        const DeviceIcon = Icon[d.icon]
+        return (
+          <button
+            key={d.id}
+            onClick={() => setDevice(d.id)}
+            className={cn(
+              "flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors",
+              device === d.id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground",
+            )}
+            aria-label={d.label}
+            aria-pressed={device === d.id}
+          >
+            <DeviceIcon width={15} height={15} />
+            {!compact ? <span className="hidden sm:inline">{d.label}</span> : null}
+          </button>
+        )
+      })}
+    </div>
+  )
 
   return (
     <div className="mx-auto max-w-6xl">
@@ -72,6 +125,15 @@ export default function WebsiteBuilderPage() {
             <span className={cn("h-1.5 w-1.5 rounded-full", p.status === "published" ? "bg-success" : "bg-muted-foreground")} />
             {p.status === "published" ? "Publikálva" : "Vázlat"}
           </span>
+          <a
+            href={`/s/${p.slug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground hover:bg-muted"
+          >
+            <Icon.external width={14} height={14} />
+            <span className="hidden sm:inline">Élő nézet</span>
+          </a>
           <button
             onClick={() => setPreviewOpen(true)}
             className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground hover:bg-muted lg:hidden"
@@ -102,7 +164,7 @@ export default function WebsiteBuilderPage() {
         ))}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_420px]">
+      <div className="grid gap-6 lg:grid-cols-[1fr_440px]">
         {/* Editor */}
         <div className="glass-panel rounded-2xl p-6">
           {step === 1 ? (
@@ -144,7 +206,7 @@ export default function WebsiteBuilderPage() {
                     </button>
                   ))}
                 </div>
-                <div className="mt-3 flex gap-4">
+                <div className="mt-3 flex flex-wrap items-center gap-4">
                   <label className="flex items-center gap-2 text-sm text-muted-foreground">
                     Fő szín
                     <input type="color" value={p.primaryColor} onChange={(e) => updateProject({ primaryColor: e.target.value })} className="h-8 w-10 cursor-pointer rounded border border-border bg-card" />
@@ -153,7 +215,18 @@ export default function WebsiteBuilderPage() {
                     Kiemelő
                     <input type="color" value={p.accentColor} onChange={(e) => updateProject({ accentColor: e.target.value })} className="h-8 w-10 cursor-pointer rounded border border-border bg-card" />
                   </label>
+                  {p.logoUrl ? (
+                    <button
+                      onClick={grabLogoColors}
+                      disabled={extracting}
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary hover:bg-primary/15 disabled:opacity-50"
+                    >
+                      <Icon.palette width={15} height={15} />
+                      {extracting ? "Kinyerés…" : "Színek a logóból"}
+                    </button>
+                  ) : null}
                 </div>
+                {paletteMsg ? <p className="mt-2 text-xs text-muted-foreground">{paletteMsg}</p> : null}
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
@@ -183,16 +256,17 @@ export default function WebsiteBuilderPage() {
               </div>
 
               <div>
-                <h3 className="text-sm font-semibold text-foreground">Megjelenítendő oldalak</h3>
+                <h3 className="text-sm font-semibold text-foreground">Megjelenítendő menüpontok</h3>
+                <p className="mt-0.5 text-xs text-muted-foreground">Kapcsolja be, mely oldalak jelenjenek meg a weboldalon.</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {(
                     [
                       ["about", "Rólunk"],
                       ["services", "Szolgáltatások"],
-                      ["references", "Referenciák"],
                       ["pricing", "Árak"],
-                      ["contact", "Kapcsolat"],
+                      ["references", "Referenciák"],
                       ["blog", "Blog"],
+                      ["contact", "Kapcsolat"],
                     ] as [keyof SiteProject["pages"], string][]
                   ).map(([key, label]) => (
                     <button
@@ -217,6 +291,10 @@ export default function WebsiteBuilderPage() {
                   <input className={field} value={p.companyName} onChange={(e) => updateProject({ companyName: e.target.value })} />
                 </div>
                 <div>
+                  <label className="mb-1.5 block text-sm font-medium text-foreground">Tevékenység / szakterület</label>
+                  <input className={field} value={p.activity} onChange={(e) => updateProject({ activity: e.target.value })} placeholder="pl. Fodrászat, Könyvelés" />
+                </div>
+                <div>
                   <label className="mb-1.5 block text-sm font-medium text-foreground">Hero cím</label>
                   <input className={field} value={p.heroTitle} onChange={(e) => updateProject({ heroTitle: e.target.value })} />
                 </div>
@@ -229,11 +307,11 @@ export default function WebsiteBuilderPage() {
                   <input className={field} value={p.ctaText} onChange={(e) => updateProject({ ctaText: e.target.value })} />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium text-foreground">„Rólunk" cím</label>
+                  <label className="mb-1.5 block text-sm font-medium text-foreground">„Rólunk” cím</label>
                   <input className={field} value={p.aboutTitle} onChange={(e) => updateProject({ aboutTitle: e.target.value })} />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium text-foreground">„Rólunk" szöveg</label>
+                  <label className="mb-1.5 block text-sm font-medium text-foreground">„Rólunk” szöveg</label>
                   <textarea rows={3} className={cn(field, "resize-none")} value={p.aboutText} onChange={(e) => updateProject({ aboutText: e.target.value })} />
                 </div>
               </div>
@@ -261,20 +339,66 @@ export default function WebsiteBuilderPage() {
                   {!p.services.length ? <p className="text-sm text-muted-foreground">Még nincs szolgáltatás. Adjon hozzá legalább kettőt a jobb online megjelenés-pontszámért.</p> : null}
                 </div>
               </div>
+
+              {/* References editor (only when the Referenciák page is enabled) */}
+              {p.pages.references ? (
+                <div>
+                  <div className="mb-2 flex items-center justify-between">
+                    <h3 className="text-sm font-semibold text-foreground">Referenciák / vélemények</h3>
+                    <button onClick={addReference} className="rounded-lg bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary hover:bg-primary/15">
+                      + Hozzáadás
+                    </button>
+                  </div>
+                  <div className="space-y-2">
+                    {p.references.map((r, i) => (
+                      <div key={i} className="flex items-start gap-2">
+                        <textarea
+                          rows={2}
+                          className={cn(field, "resize-none")}
+                          value={r}
+                          onChange={(e) => updateReference(i, e.target.value)}
+                          placeholder="Ügyfél véleménye"
+                        />
+                        <button onClick={() => removeReference(i)} className="mt-1 rounded-lg p-2 text-muted-foreground hover:bg-danger/10 hover:text-danger" aria-label="Törlés">
+                          <Icon.close width={16} height={16} />
+                        </button>
+                      </div>
+                    ))}
+                    {!p.references.length ? (
+                      <p className="text-sm text-muted-foreground">
+                        Nincs saját vélemény megadva – addig minta vélemények jelennek meg az oldalon.
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
             </div>
           ) : null}
 
           {step === 3 ? (
             <div className="space-y-6">
               <h2 className="font-display text-lg font-bold text-foreground">Képek feltöltése</h2>
-              <ImageUploader
-                value={p.logoUrl}
-                onUploaded={(url) => updateProject({ logoUrl: url })}
-                onRemove={() => updateProject({ logoUrl: null })}
-                folder="sites"
-                label="Logó"
-                aspect="logo"
-              />
+              <div>
+                <ImageUploader
+                  value={p.logoUrl}
+                  onUploaded={(url) => updateProject({ logoUrl: url })}
+                  onRemove={() => updateProject({ logoUrl: null })}
+                  folder="sites"
+                  label="Logó"
+                  aspect="logo"
+                />
+                {p.logoUrl ? (
+                  <button
+                    onClick={grabLogoColors}
+                    disabled={extracting}
+                    className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary hover:bg-primary/15 disabled:opacity-50"
+                  >
+                    <Icon.palette width={15} height={15} />
+                    {extracting ? "Színek kinyerése…" : "Színpaletta a logóból"}
+                  </button>
+                ) : null}
+                {paletteMsg ? <p className="mt-2 text-xs text-muted-foreground">{paletteMsg}</p> : null}
+              </div>
               <ImageUploader
                 value={p.heroImageUrl}
                 onUploaded={(url) => updateProject({ heroImageUrl: url })}
@@ -341,8 +465,17 @@ export default function WebsiteBuilderPage() {
                   Az oldal címe
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  vallalkozoiportal.hu/<span className="font-medium text-foreground">{p.slug}</span>
+                  vallalkozoiportal.hu/s/<span className="font-medium text-foreground">{p.slug}</span>
                 </p>
+                <a
+                  href={`/s/${p.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
+                >
+                  <Icon.external width={15} height={15} />
+                  Weboldal megnyitása élőben
+                </a>
               </div>
 
               {p.status === "published" ? (
@@ -382,32 +515,51 @@ export default function WebsiteBuilderPage() {
         {/* Live preview (desktop) */}
         <div className="hidden lg:block">
           <div className="sticky top-24">
-            <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">Élő előnézet</p>
-            <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-xl">
-              <div className="flex items-center gap-1.5 border-b border-neutral-200 bg-neutral-50 px-3 py-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-neutral-300" />
-                <span className="h-2.5 w-2.5 rounded-full bg-neutral-300" />
-                <span className="h-2.5 w-2.5 rounded-full bg-neutral-300" />
+            <div className="mb-2 flex items-center justify-between">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Élő előnézet</p>
+              <div className="flex items-center gap-2">
+                <DeviceToggle compact />
+                <button
+                  onClick={() => setPreviewOpen(true)}
+                  className="rounded-lg border border-border bg-card p-1.5 text-muted-foreground hover:text-foreground"
+                  aria-label="Teljes képernyős előnézet"
+                >
+                  <Icon.external width={15} height={15} />
+                </button>
               </div>
-              <div className="h-[560px]">
-                <SitePreview project={p} />
+            </div>
+            <div className="overflow-hidden rounded-2xl border border-border bg-neutral-100 p-3 shadow-xl dark:bg-neutral-900">
+              <div className="h-[600px]">
+                <DevicePreview project={p} device={device} />
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile preview modal */}
+      {/* Full-screen / mobile preview modal */}
       {previewOpen ? (
-        <div className="fixed inset-0 z-50 flex flex-col bg-foreground/50 backdrop-blur-sm lg:hidden">
-          <div className="flex items-center justify-between bg-card px-4 py-3">
+        <div className="fixed inset-0 z-50 flex flex-col bg-foreground/60 backdrop-blur-sm">
+          <div className="flex items-center justify-between gap-3 bg-card px-4 py-3">
             <p className="text-sm font-semibold text-foreground">Élő előnézet</p>
-            <button onClick={() => setPreviewOpen(false)} className="rounded-lg p-2 text-foreground hover:bg-muted" aria-label="Bezárás">
-              <Icon.close />
-            </button>
+            <div className="flex items-center gap-2">
+              <DeviceToggle />
+              <a
+                href={`/s/${p.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-foreground hover:bg-muted"
+              >
+                <Icon.external width={14} height={14} />
+                <span className="hidden sm:inline">Új lapon</span>
+              </a>
+              <button onClick={() => setPreviewOpen(false)} className="rounded-lg p-2 text-foreground hover:bg-muted" aria-label="Bezárás">
+                <Icon.close />
+              </button>
+            </div>
           </div>
-          <div className="flex-1 overflow-hidden bg-white">
-            <SitePreview project={p} />
+          <div className="flex-1 overflow-hidden bg-neutral-100 p-4 dark:bg-neutral-900">
+            <DevicePreview project={p} device={device} />
           </div>
         </div>
       ) : null}

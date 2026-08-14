@@ -14,8 +14,7 @@ export function SiteFooter() {
               <span className="font-display text-sm font-bold text-foreground">Vállalkozói Portál</span>
             </div>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Ingyenes, kormányzati háttérrel működő digitális szolgáltatás a magyar vállalkozások indításához és
-              fejlődéséhez.
+              Ingyenes digitális platform a kezdő magyar vállalkozások indításához és fejlődéséhez.
             </p>
           </div>
 
@@ -49,7 +48,7 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
-          <p>© {new Date().getFullYear()} Vállalkozói Portál – Nemzeti Digitális Program. Demonstrációs felület.</p>
+          <p>© {new Date().getFullYear()} Vállalkozói Portál. Demonstrációs felület.</p>
           <p>Minden adat a böngészőben, helyben tárolódik.</p>
         </div>
       </div>
