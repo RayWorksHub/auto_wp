@@ -9,12 +9,12 @@ export function SiteHeader() {
 
   return (
     <>
-      {/* Government identity strip */}
+      {/* Slim utility strip */}
       <div className="bg-primary-dark text-primary-foreground">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-1.5 text-[12px] lg:px-6">
           <span className="flex items-center gap-2 opacity-90">
-            <Icon.shield width={14} height={14} />
-            Hivatalos vállalkozásfejlesztési portál
+            <Icon.sparkle width={14} height={14} />
+            Ingyenes platform kezdő vállalkozóknak
           </span>
           <div className="hidden items-center gap-4 opacity-90 sm:flex">
             <Link href="/help" className="hover:underline">
@@ -37,7 +37,7 @@ export function SiteHeader() {
             </span>
             <span className="leading-tight">
               <span className="block font-display text-[15px] font-bold text-foreground">Vállalkozói Portál</span>
-              <span className="block text-[11px] text-muted-foreground">Nemzeti Digitális Program</span>
+              <span className="block text-[11px] text-muted-foreground">Tanulj, építs, növekedj</span>
             </span>
           </Link>
 

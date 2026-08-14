@@ -4,6 +4,8 @@ import { useState } from "react"
 import Link from "next/link"
 import { usePortal } from "@/components/portal-provider"
 import { Icon } from "@/components/icons"
+import { LessonVideo } from "@/components/lesson-video"
+import { downloadResource } from "@/lib/download"
 import { cn } from "@/lib/utils"
 import type { Course } from "@/lib/types"
 
@@ -47,34 +49,7 @@ export function Classroom({ course, backHref, backLabel }: { course: Course; bac
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         {/* Player */}
         <div>
-          <div className="overflow-hidden rounded-2xl border border-border bg-black shadow-lg">
-            <div className="aspect-video w-full">
-              {lesson?.youtubeId ? (
-                <iframe
-                  key={lesson.id}
-                  className="h-full w-full"
-                  src={`https://www.youtube-nocookie.com/embed/${lesson.youtubeId}?rel=0`}
-                  title={lesson.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              ) : (
-                <a
-                  href={lesson?.youtubeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-full w-full flex-col items-center justify-center gap-3 bg-neutral-900 text-center text-neutral-300"
-                >
-                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/10">
-                    <Icon.play width={26} height={26} />
-                  </span>
-                  <span className="max-w-xs text-sm">
-                    Ehhez a leckéhez ajánlott videó a YouTube-on nyílik meg. (Előkészített tananyaghely.)
-                  </span>
-                </a>
-              )}
-            </div>
-          </div>
+          {lesson ? <LessonVideo lesson={lesson} color={course.color} /> : null}
 
           {lesson ? (
             <div className="mt-5 glass-panel rounded-2xl p-6">
@@ -177,7 +152,13 @@ export function Classroom({ course, backHref, backLabel }: { course: Course; bac
               <div className="mt-4 rounded-xl border border-dashed border-border p-3">
                 <p className="text-xs font-medium text-foreground">Letölthető segédanyag</p>
                 <p className="mt-0.5 text-xs text-muted-foreground">{course.downloadable}</p>
-                <button className="mt-2 text-xs font-semibold text-primary hover:underline">Letöltés (demó)</button>
+                <button
+                  onClick={() => downloadResource(course)}
+                  className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-primary/15"
+                >
+                  <Icon.download width={14} height={14} />
+                  Letöltés
+                </button>
               </div>
             ) : null}
 

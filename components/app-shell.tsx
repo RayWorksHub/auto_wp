@@ -12,7 +12,6 @@ const NAV = [
   { href: "/app", label: "Áttekintés", icon: Icon.dashboard },
   { href: "/app/education", label: "Edukáció", icon: Icon.education },
   { href: "/app/website", label: "Online megjelenés", icon: Icon.globe },
-  { href: "/app/office", label: "Irodai készségek", icon: Icon.office },
   { href: "/app/profile", label: "Vállalkozási profil", icon: Icon.profile },
 ]
 
@@ -53,7 +52,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
         <div className="leading-tight">
           <p className="font-display text-sm font-bold text-foreground">Vállalkozói Portál</p>
-          <p className="text-[11px] text-muted-foreground">Nemzeti Digitális Program</p>
+          <p className="text-[11px] text-muted-foreground">Tanulj, építs, növekedj</p>
         </div>
       </div>
 

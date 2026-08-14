@@ -130,6 +130,42 @@ export const Icon = {
       <path d="M12 15V4M8 8l4-4 4 4M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
     </svg>
   ),
+  download: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M12 4v11M8 11l4 4 4-4M4 17v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1" />
+    </svg>
+  ),
+  monitor: (p: IconProps) => (
+    <svg {...base(p)}>
+      <rect x="3" y="4" width="18" height="12" rx="1.5" />
+      <path d="M8 20h8M12 16v4" />
+    </svg>
+  ),
+  tablet: (p: IconProps) => (
+    <svg {...base(p)}>
+      <rect x="5" y="3" width="14" height="18" rx="2" />
+      <path d="M11 18h2" />
+    </svg>
+  ),
+  phone: (p: IconProps) => (
+    <svg {...base(p)}>
+      <rect x="7" y="2" width="10" height="20" rx="2" />
+      <path d="M11 18h2" />
+    </svg>
+  ),
+  external: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M14 5h5v5M19 5l-8 8M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4" />
+    </svg>
+  ),
+  palette: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M12 3a9 9 0 1 0 0 18c1 0 1.7-.8 1.7-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-1 .8-1.8 1.8-1.8H16a5 5 0 0 0 5-5c0-3.9-4-7-9-7Z" />
+      <circle cx="7.5" cy="10.5" r="1" fill="currentColor" />
+      <circle cx="12" cy="7.5" r="1" fill="currentColor" />
+      <circle cx="16.5" cy="10.5" r="1" fill="currentColor" />
+    </svg>
+  ),
   edit: (p: IconProps) => (
     <svg {...base(p)}>
       <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />

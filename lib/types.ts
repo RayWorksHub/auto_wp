@@ -94,6 +94,12 @@ export interface Lesson {
   keyPoints?: string[]
 }
 
+export interface CourseResource {
+  filename: string
+  kind: "pdf" | "csv"
+  lines: string[]
+}
+
 export interface Course {
   id: string
   type: "startup" | "office" | "ai"
@@ -108,6 +114,7 @@ export interface Course {
   lessonCount: number
   lessons: Lesson[]
   downloadable: string | null
+  resource?: CourseResource
 }
 
 export interface Faq {
