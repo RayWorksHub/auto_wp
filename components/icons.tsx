@@ -114,4 +114,43 @@ export const Icon = {
       <path d="M3 11 12 4l9 7M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9" />
     </svg>
   ),
+  plus: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  ),
+  mail: (p: IconProps) => (
+    <svg {...base(p)}>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3 7 9 6 9-6" />
+    </svg>
+  ),
+  upload: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M12 15V4M8 8l4-4 4 4M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
+    </svg>
+  ),
+  edit: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+    </svg>
+  ),
+  trash: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13" />
+    </svg>
+  ),
+  building: (p: IconProps) => (
+    <svg {...base(p)}>
+      <rect x="4" y="3" width="16" height="18" rx="1.5" />
+      <path d="M9 8h.01M15 8h.01M9 12h.01M15 12h.01M9 16h6v5" />
+    </svg>
+  ),
+  rocket: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M12 3c3 1 5 4 5 8l-2 4H9l-2-4c0-4 2-7 5-8Z" />
+      <circle cx="12" cy="9" r="1.5" />
+      <path d="M9 15c-2 1-2 3-2 5 2 0 4 0 5-2M15 15c2 1 2 3 2 5-2 0-4 0-5-2" />
+    </svg>
+  ),
 }

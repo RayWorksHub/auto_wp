@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="hu" className={`${inter.variable} ${jakarta.variable} bg-background`}>
+    <html lang="hu" data-scroll-behavior="smooth" className={`${inter.variable} ${jakarta.variable} bg-background`}>
       <body className="min-h-dvh bg-background text-foreground antialiased">
         <PortalProvider>{children}</PortalProvider>
       </body>
