@@ -67,6 +67,7 @@ const demoProject: SiteProject = {
     "Klímatelepítés, karbantartás és tisztítás kiszámítható áron, tapasztalt szakemberektől.",
   heroImageUrl: null,
   logoUrl: null,
+  aboutImageUrl: null,
   galleryUrls: [],
   aboutTitle: "Rólunk",
   aboutText:

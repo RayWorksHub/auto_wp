@@ -230,6 +230,7 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
         heroSubtitle: "",
         heroImageUrl: null,
         logoUrl: null,
+        aboutImageUrl: null,
         galleryUrls: [],
         aboutTitle: "Rólunk",
         aboutText: "",

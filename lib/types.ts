@@ -56,6 +56,7 @@ export interface SiteProject {
   heroSubtitle: string
   heroImageUrl: string | null
   logoUrl: string | null
+  aboutImageUrl: string | null
   galleryUrls: string[]
   aboutTitle: string
   aboutText: string

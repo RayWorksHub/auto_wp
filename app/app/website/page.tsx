@@ -399,16 +399,39 @@ export default function WebsiteBuilderPage() {
                 ) : null}
                 {paletteMsg ? <p className="mt-2 text-xs text-muted-foreground">{paletteMsg}</p> : null}
               </div>
-              <ImageUploader
-                value={p.heroImageUrl}
-                onUploaded={(url) => updateProject({ heroImageUrl: url })}
-                onRemove={() => updateProject({ heroImageUrl: null })}
-                folder="sites"
-                label="Főkép (hero)"
-                aspect="wide"
-              />
+              <div>
+                <ImageUploader
+                  value={p.heroImageUrl}
+                  onUploaded={(url) => updateProject({ heroImageUrl: url })}
+                  onRemove={() => updateProject({ heroImageUrl: null })}
+                  folder="sites"
+                  label="Főkép (hero)"
+                  aspect="wide"
+                />
+                <p className="mt-1.5 text-xs text-muted-foreground">
+                  A kezdőoldal nagy fejlécképe. Ha üresen hagyja, márkázott háttér jelenik meg.
+                </p>
+              </div>
+
+              <div>
+                <ImageUploader
+                  value={p.aboutImageUrl}
+                  onUploaded={(url) => updateProject({ aboutImageUrl: url })}
+                  onRemove={() => updateProject({ aboutImageUrl: null })}
+                  folder="sites"
+                  label="Rólunk kép"
+                  aspect="wide"
+                />
+                <p className="mt-1.5 text-xs text-muted-foreground">
+                  A „Rólunk” szekcióhoz tartozó kép (pl. csapat, üzlet vagy referencia).
+                </p>
+              </div>
+
               <div>
                 <p className="mb-2 text-sm font-medium text-foreground">Galéria</p>
+                <p className="mb-2 text-xs text-muted-foreground">
+                  Több kép is feltölthető – ezek a Galéria és a Referenciák szekcióban jelennek meg.
+                </p>
                 <div className="grid grid-cols-3 gap-3">
                   {p.galleryUrls.map((url, i) => (
                     <div key={i} className="group relative aspect-square overflow-hidden rounded-xl border border-border">

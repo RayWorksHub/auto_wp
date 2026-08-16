@@ -16,6 +16,8 @@ export function Classroom({ course, backHref, backLabel }: { course: Course; bac
     return firstUndone === -1 ? 0 : firstUndone
   })
 
+  const [justFinished, setJustFinished] = useState(false)
+
   const lesson = course.lessons[activeIndex]
   const done = course.lessons.filter((l) => progress[l.id]).length
   const total = course.lessons.length
@@ -26,6 +28,14 @@ export function Classroom({ course, backHref, backLabel }: { course: Course; bac
     if (!lesson) return
     toggleLesson(lesson.id, true)
     if (activeIndex < total - 1) setActiveIndex((i) => i + 1)
+  }
+
+  // Fired when the YouTube player reaches the end of the video.
+  const handleVideoEnded = () => {
+    if (!lesson || progress[lesson.id]) return
+    toggleLesson(lesson.id, true)
+    setJustFinished(true)
+    window.setTimeout(() => setJustFinished(false), 4000)
   }
 
   return (
@@ -49,7 +59,14 @@ export function Classroom({ course, backHref, backLabel }: { course: Course; bac
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         {/* Player */}
         <div>
-          {lesson ? <LessonVideo lesson={lesson} color={course.color} /> : null}
+          {lesson ? <LessonVideo lesson={lesson} color={course.color} onEnded={handleVideoEnded} /> : null}
+
+          {justFinished ? (
+            <div className="mt-3 flex items-center gap-2 rounded-xl border border-success/30 bg-success/10 px-4 py-3 text-sm font-medium text-success">
+              <Icon.check width={16} height={16} />
+              Ezt a tananyagrészt elvégezte – automatikusan késznek jelöltük.
+            </div>
+          ) : null}
 
           {lesson ? (
             <div className="mt-5 glass-panel rounded-2xl p-6">

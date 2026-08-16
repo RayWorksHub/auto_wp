@@ -349,10 +349,10 @@ export function SitePreview({
             <Section animated={animated}>
               <div className="grid items-center gap-8 @lg:grid-cols-2">
                 <div className="overflow-hidden" style={{ borderRadius: "var(--sp-radius)" }}>
-                  {project.galleryUrls[0] || project.heroImageUrl ? (
+                  {project.aboutImageUrl || project.galleryUrls[0] ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={project.galleryUrls[0] || project.heroImageUrl || "/placeholder.svg"}
+                      src={project.aboutImageUrl || project.galleryUrls[0] || "/placeholder.svg"}
                       alt=""
                       className="aspect-[4/3] w-full object-cover"
                     />
