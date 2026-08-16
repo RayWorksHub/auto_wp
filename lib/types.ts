@@ -103,7 +103,7 @@ export interface CourseResource {
 
 export interface Course {
   id: string
-  type: "startup" | "office" | "ai"
+  type: "startup" | "office" | "ai" | "social"
   product?: string
   title: string
   shortTitle?: string

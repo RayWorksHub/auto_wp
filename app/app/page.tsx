@@ -96,7 +96,7 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Link href="/app/website" className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-primary">
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
             <Icon.sparkle width={20} height={20} />
@@ -106,6 +106,15 @@ export default function DashboardPage() {
             <p className="text-sm text-muted-foreground">
               {ladder.nextLabel ? `Haladjon a(z) „${ladder.nextLabel}" szint felé.` : "Minden fő lépést teljesített."}
             </p>
+          </div>
+        </Link>
+        <Link href="/app/support" className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-primary">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet/10 text-violet">
+            <Icon.headset width={20} height={20} />
+          </span>
+          <div>
+            <p className="text-sm font-semibold text-foreground">Távoli segítség</p>
+            <p className="text-sm text-muted-foreground">Élő videóhívás egy operátorral egy beállításhoz.</p>
           </div>
         </Link>
         <Link href="/help" className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-primary">

@@ -9,6 +9,7 @@ const LABELS: Record<string, string> = {
   startup: "Vállalkozás",
   ai: "Mesterséges intelligencia",
   office: "Irodai készségek",
+  social: "Közösségi média",
 }
 
 export default function ClassroomPage({

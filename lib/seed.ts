@@ -400,7 +400,7 @@ export const OFFICE_TRACKS: Course[] = [
         source: "Magyar Excel oktatóvideó",
         keyPoints: [
           "SZUM, ÁTLAG, DARAB függvények a napi könyveléshez.",
-          "HA függvény egyszerű döntésekhez (pl. fizetve / nem fizetve).",
+          "HA függv��ny egyszerű döntésekhez (pl. fizetve / nem fizetve).",
           "Havi bevétel-kiadás kimutatás összeállítása.",
         ],
       },
@@ -519,7 +519,159 @@ export const OFFICE_TRACKS: Course[] = [
   },
 ]
 
-export const ALL_COURSES: Course[] = [...COURSES, ...AI_COURSES, ...OFFICE_TRACKS]
+export const SOCIAL_COURSES: Course[] = [
+  {
+    id: "social-basics",
+    type: "social",
+    title: "Közösségi média alapok vállalkozóknak",
+    shortTitle: "Közösségi média alapok",
+    level: "Kezdő",
+    duration: "55 perc",
+    color: "#d6336c",
+    status: "active",
+    lessonCount: 3,
+    downloadable: "Közösségi média tartalomnaptár (CSV)",
+    resource: {
+      filename: "kozossegi-media-tartalomnaptar.csv",
+      kind: "csv",
+      lines: [
+        "Hét;Nap;Platform;Tartalom típusa;Téma / poszt ötlet;Vizuál;Állapot",
+        "1;Hétfő;Facebook;Edukáció;Gyakori ügyfélkérdés megválaszolása;Fotó;Tervezett",
+        "1;Szerda;Instagram;Kulisszák mögött;Egy munkanap a vállalkozásban;Reels;Tervezett",
+        "1;Péntek;Facebook;Ajánlat;Heti akció vagy csomag bemutatása;Grafika;Tervezett",
+        "2;Kedd;Instagram;Vélemény;Elégedett ügyfél idézete;Story;Tervezett",
+        "2;Csütörtök;Facebook;Edukáció;3 tipp a témádban;Karusszel;Tervezett",
+        ";;;;;;",
+      ],
+    },
+    description:
+      "Üzleti Facebook oldal és Instagram fiók létrehozása, majd rendszeres, értékes tartalom készítése kisvállalkozásként.",
+    lessons: [
+      {
+        id: "social-1",
+        order: 1,
+        title: "Üzleti Facebook oldal létrehozása",
+        duration: "16 perc",
+        description: "Lépésről lépésre egy vállalkozói Facebook oldal beállítása és feltöltése.",
+        youtubeId: "12eR1RRsrLY",
+        youtubeUrl: "https://www.youtube.com/watch?v=12eR1RRsrLY",
+        source: "Közösségi Kalandozások",
+        keyPoints: [
+          "Oldal létrehozása „Vállalkozás és márka” típussal, kategória és név megadása.",
+          "Profil- és borítókép, valamint a Névjegy (elérhetőségek) kitöltése.",
+          "Az első posztok, amelyekkel nem marad üres az oldal.",
+        ],
+      },
+      {
+        id: "social-2",
+        order: 2,
+        title: "Instagram fiók indítása vállalkozásnak",
+        duration: "18 perc",
+        description: "Üzleti Instagram profil beállítása és az első tartalmak közzététele.",
+        youtubeId: "8rdKIdQs3Ik",
+        youtubeUrl: "https://www.youtube.com/watch?v=8rdKIdQs3Ik",
+        source: "BeMyGuest",
+        keyPoints: [
+          "Üzleti profilra váltás és a bio (bemutatkozás) optimalizálása.",
+          "Posztok, Story-k és Reels közötti különbség a gyakorlatban.",
+          "Következetes vizuális megjelenés kialakítása.",
+        ],
+      },
+      {
+        id: "social-3",
+        order: 3,
+        title: "Tartalomötletek és rendszeresség",
+        duration: "21 perc",
+        description: "Hogyan tervezzünk könnyen követhető, értékes tartalmat hétről hétre?",
+        youtubeId: "C6wWh8dXvrY",
+        youtubeUrl: "https://www.youtube.com/watch?v=C6wWh8dXvrY",
+        source: "Dallos Zoltán | BUSINESS",
+        keyPoints: [
+          "Tartalompillérek: edukáció, kulisszák, vélemény, ajánlat.",
+          "Egyszerű tartalomnaptár összeállítása a letölthető sablonnal.",
+          "Reális posztolási ütem egy egyszemélyes vállalkozásnak.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "social-ads",
+    type: "social",
+    title: "Facebook és Instagram hirdetések",
+    shortTitle: "Meta hirdetések",
+    level: "Középhaladó",
+    duration: "1 óra",
+    color: "#7048e8",
+    status: "active",
+    lessonCount: 3,
+    downloadable: null,
+    description:
+      "Az első fizetett Meta hirdetések beállítása kis költségvetéssel, a célzás és a mérés alapjaival.",
+    lessons: [
+      {
+        id: "social-ads-1",
+        order: 1,
+        title: "Meta hirdetés kezdőknek",
+        duration: "19 perc",
+        description: "Az első „csali” hirdetés beállítása a Meta hirdetéskezelőben.",
+        youtubeId: "5nFvZ-1aLSE",
+        youtubeUrl: "https://www.youtube.com/watch?v=5nFvZ-1aLSE",
+        source: "Szimjon Timi – hirdetés oktatás",
+        keyPoints: [
+          "Hirdetési fiók és a hirdetéskezelő felépítése.",
+          "Cél, célközönség és költségkeret megadása kezdőként.",
+          "Egyszerű első hirdetés összeállítása lépésről lépésre.",
+        ],
+      },
+      {
+        id: "social-ads-2",
+        order: 2,
+        title: "Facebook hirdetések teljes útmutató",
+        duration: "24 perc",
+        description: "Átfogó, gyakorlati bevezető a Facebook hirdetések felépítésébe.",
+        youtubeId: "6FOxmNUjvzQ",
+        youtubeUrl: "https://www.youtube.com/watch?v=6FOxmNUjvzQ",
+        source: "Ferenczi Márton",
+        keyPoints: [
+          "Kampány – hirdetéssorozat – hirdetés hármas felépítése.",
+          "Célzási lehetőségek és a megfelelő közönség kiválasztása.",
+          "Kreatív (kép/videó) és szöveg, ami kattintásra ösztönöz.",
+        ],
+      },
+      {
+        id: "social-ads-3",
+        order: 3,
+        title: "PPC a Meta felületein",
+        duration: "22 perc",
+        description: "Hogyan hirdessünk hatékonyan Facebookon és Instagramon egyszerre?",
+        youtubeId: "G8C3Umu_mDU",
+        youtubeUrl: "https://www.youtube.com/watch?v=G8C3Umu_mDU",
+        source: "Marketing MSc Podcast",
+        keyPoints: [
+          "A Facebook és Instagram elhelyezések közötti különbségek.",
+          "Költségkeret elosztása és a legfontosabb mérőszámok.",
+          "Mikor és mit érdemes optimalizálni egy futó hirdetésen.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "social-strategy",
+    type: "social",
+    title: "Közösségi média stratégia",
+    shortTitle: "Stratégia",
+    level: "Középhaladó",
+    duration: "50 perc",
+    color: "#0ca678",
+    status: "coming-soon",
+    lessonCount: 4,
+    downloadable: null,
+    description: "Célközönség, üzenet és mérhető célok – hosszú távú, fenntartható jelenlét felépítése.",
+    lessons: [],
+  },
+]
+
+export const ALL_COURSES: Course[] = [...COURSES, ...AI_COURSES, ...OFFICE_TRACKS, ...SOCIAL_COURSES]
 
 export const FAQS: Faq[] = [
   {

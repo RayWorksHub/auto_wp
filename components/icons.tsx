@@ -189,4 +189,64 @@ export const Icon = {
       <path d="M9 15c-2 1-2 3-2 5 2 0 4 0 5-2M15 15c2 1 2 3 2 5-2 0-4 0-5-2" />
     </svg>
   ),
+  share: (p: IconProps) => (
+    <svg {...base(p)}>
+      <circle cx="6" cy="12" r="2.5" />
+      <circle cx="17" cy="6" r="2.5" />
+      <circle cx="17" cy="18" r="2.5" />
+      <path d="m8.2 10.8 6.6-3.6M8.2 13.2l6.6 3.6" />
+    </svg>
+  ),
+  headset: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M4 13v-1a8 8 0 0 1 16 0v1" />
+      <rect x="3" y="13" width="4" height="7" rx="1.5" />
+      <rect x="17" y="13" width="4" height="7" rx="1.5" />
+      <path d="M20 20a4 4 0 0 1-4 3h-2" />
+    </svg>
+  ),
+  video: (p: IconProps) => (
+    <svg {...base(p)}>
+      <rect x="2" y="6" width="14" height="12" rx="2" />
+      <path d="m16 10 6-3v10l-6-3" />
+    </svg>
+  ),
+  videoOff: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M16 10.5V8a2 2 0 0 0-2-2H7M2 8v8a2 2 0 0 0 2 2h10c.4 0 .7-.1 1-.3M16 13.5l6 2.5V7l-6 3" />
+      <path d="m3 3 18 18" />
+    </svg>
+  ),
+  mic: (p: IconProps) => (
+    <svg {...base(p)}>
+      <rect x="9" y="3" width="6" height="11" rx="3" />
+      <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+    </svg>
+  ),
+  micOff: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M9 9v2a3 3 0 0 0 4.5 2.6M15 11V6a3 3 0 0 0-5.7-1.3" />
+      <path d="M5 11a7 7 0 0 0 10.3 6.2M19 11a7 7 0 0 1-.5 2.6M12 18v3" />
+      <path d="m3 3 18 18" />
+    </svg>
+  ),
+  phoneOff: (p: IconProps) => (
+    <svg {...base(p)}>
+      <path d="M3.5 9.5A16 16 0 0 1 12 7c3 0 5.9.8 8.5 2.5.6.4 1 1.1.9 1.8l-.3 2a1.6 1.6 0 0 1-1.9 1.4l-2.7-.6a1.6 1.6 0 0 1-1.2-1.2l-.4-1.6a12 12 0 0 0-5.6 0l-.4 1.6a1.6 1.6 0 0 1-1.2 1.2l-2.7.6A1.6 1.6 0 0 1 3 13.3l-.3-2c-.1-.7.3-1.4.8-1.8Z" />
+      <path d="m3 3 18 18" />
+    </svg>
+  ),
+  users: (p: IconProps) => (
+    <svg {...base(p)}>
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M3.5 20c0-3 2.5-5 5.5-5s5.5 2 5.5 5" />
+      <path d="M16 5.2a3.2 3.2 0 0 1 0 5.6M18 20c0-2.4-1-4-2.5-4.6" />
+    </svg>
+  ),
+  clock: (p: IconProps) => (
+    <svg {...base(p)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </svg>
+  ),
 }
