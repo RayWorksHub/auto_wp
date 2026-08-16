@@ -4,6 +4,14 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import type { SiteProject } from "@/lib/types"
 import { initials } from "@/lib/utils"
 
+function ContactIcon({ d }: { d: string }) {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden className="mt-0.5 shrink-0 opacity-90">
+      <path d={d} />
+    </svg>
+  )
+}
+
 /* ------------------------------------------------------------------ */
 /* Scroll-reveal wrapper (fade + rise). Static when animated=false.    */
 /* ------------------------------------------------------------------ */
@@ -302,10 +310,12 @@ export function SitePreview({
                   (t) => (
                     <div key={t} className="flex items-center gap-2 text-neutral-700">
                       <span
-                        className="flex h-4 w-4 items-center justify-center rounded-full text-[9px] text-white"
+                        className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-white"
                         style={{ background: "var(--sp-primary)" }}
                       >
-                        ✓
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                          <path d="M20 6 9 17l-5-5" />
+                        </svg>
                       </span>
                       {t}
                     </div>
