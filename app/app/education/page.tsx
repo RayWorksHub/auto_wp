@@ -18,6 +18,12 @@ const TOPICS: { id: Topic; label: string }[] = [
   { id: "office", label: "Irodai készségek" },
 ]
 
+const GROUPS: { id: Exclude<Topic, "all">; label: string; desc: string }[] = [
+  { id: "startup", label: "Vállalkozás", desc: "Alapok az indulástól a működtetésig." },
+  { id: "ai", label: "Mesterséges intelligencia", desc: "Használja ki az MI-t a mindennapi munkában." },
+  { id: "office", label: "Irodai készségek", desc: "Excel, Word és prezentáció a gyakorlatban." },
+]
+
 function courseProgress(course: Course, progress: Record<string, boolean>) {
   const total = course.lessons.length
   if (total === 0) return 0
@@ -37,10 +43,18 @@ export default function EducationPage() {
 
   const featured = ALL_COURSES.find((c) => c.type === "ai")!
 
-  const courses = useMemo(() => {
-    if (topic === "all") return ALL_COURSES.filter((c) => c.id !== featured.id)
-    return ALL_COURSES.filter((c) => c.type === topic)
-  }, [topic, featured.id])
+  const visibleGroups = useMemo(
+    () => (topic === "all" ? GROUPS : GROUPS.filter((g) => g.id === topic)),
+    [topic],
+  )
+
+  const coursesFor = (id: Exclude<Topic, "all">) => {
+    const list = ALL_COURSES.filter((c) => c.type === id)
+    // In the combined "all" view the AI course is already highlighted in the
+    // featured banner, so drop it from its group to avoid duplication.
+    if (topic === "all" && id === "ai") return list.filter((c) => c.id !== featured.id)
+    return list
+  }
 
   const featuredPct = courseProgress(featured, progress)
 
@@ -129,62 +143,83 @@ export default function EducationPage() {
         ))}
       </div>
 
-      {/* Course grid */}
-      <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {courses.map((course, i) => {
-          const pct = courseProgress(course, progress)
-          const isComing = course.status === "coming-soon"
-          const card = (
-            <div
-              className={cn(
-                "flex h-full flex-col rounded-2xl border border-border bg-card p-5 shadow-sm transition-all duration-300",
-                !isComing && "hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg",
-                isComing && "opacity-70",
-              )}
-            >
-              <div className="flex items-center justify-between">
-                <span
-                  className="flex h-11 w-11 items-center justify-center rounded-xl text-white"
-                  style={{ backgroundColor: course.color }}
-                >
-                  {courseIcon(course.type)}
-                </span>
-                <span className="rounded-md bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                  {course.product ?? course.level}
-                </span>
-              </div>
-              <h3 className="mt-4 font-display text-lg font-bold leading-snug text-foreground">{course.title}</h3>
-              <p className="mt-1.5 flex-1 text-pretty text-sm text-muted-foreground">{course.description}</p>
-
-              <div className="mt-4">
-                <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span>
-                    {course.lessons.length} lecke · {course.duration}
-                  </span>
-                  {!isComing && <span className="font-semibold text-foreground">{pct}%</span>}
-                </div>
-                {!isComing ? (
-                  <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
-                    <div
-                      className="h-full rounded-full transition-all duration-500"
-                      style={{ width: `${pct}%`, backgroundColor: course.color }}
-                    />
-                  </div>
-                ) : (
-                  <div className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
-                    Hamarosan
-                  </div>
-                )}
-              </div>
-            </div>
-          )
+      {/* Grouped course sections by topic */}
+      <div className="mt-8 space-y-10">
+        {visibleGroups.map((group) => {
+          const groupCourses = coursesFor(group.id)
+          if (!groupCourses.length) return null
           return (
-            <Reveal key={course.id} delay={i * 60}>
-              {isComing ? card : <Link href={`/app/education/${course.id}`}>{card}</Link>}
-            </Reveal>
+            <section key={group.id}>
+              <div className="flex items-center gap-3">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  {courseIcon(group.id)}
+                </span>
+                <div>
+                  <h2 className="font-display text-xl font-bold text-foreground">{group.label}</h2>
+                  <p className="text-sm text-muted-foreground">{group.desc}</p>
+                </div>
+              </div>
+              <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {groupCourses.map((course, i) => renderCourse(course, i))}
+              </div>
+            </section>
           )
         })}
       </div>
     </div>
   )
+
+  function renderCourse(course: Course, i: number) {
+    const pct = courseProgress(course, progress)
+    const isComing = course.status === "coming-soon"
+    const card = (
+      <div
+        className={cn(
+          "flex h-full flex-col rounded-2xl border border-border bg-card p-5 shadow-sm transition-all duration-300",
+          !isComing && "hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg",
+          isComing && "opacity-70",
+        )}
+      >
+        <div className="flex items-center justify-between">
+          <span
+            className="flex h-11 w-11 items-center justify-center rounded-xl text-white"
+            style={{ backgroundColor: course.color }}
+          >
+            {courseIcon(course.type)}
+          </span>
+          <span className="rounded-md bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+            {course.product ?? course.level}
+          </span>
+        </div>
+        <h3 className="mt-4 font-display text-lg font-bold leading-snug text-foreground">{course.title}</h3>
+        <p className="mt-1.5 flex-1 text-pretty text-sm text-muted-foreground">{course.description}</p>
+
+        <div className="mt-4">
+          <div className="flex items-center justify-between text-xs text-muted-foreground">
+            <span>
+              {course.lessons.length} lecke · {course.duration}
+            </span>
+            {!isComing && <span className="font-semibold text-foreground">{pct}%</span>}
+          </div>
+          {!isComing ? (
+            <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+              <div
+                className="h-full rounded-full transition-all duration-500"
+                style={{ width: `${pct}%`, backgroundColor: course.color }}
+              />
+            </div>
+          ) : (
+            <div className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
+              Hamarosan
+            </div>
+          )}
+        </div>
+      </div>
+    )
+    return (
+      <Reveal key={course.id} delay={i * 60}>
+        {isComing ? card : <Link href={`/app/education/${course.id}`}>{card}</Link>}
+      </Reveal>
+    )
+  }
 }
