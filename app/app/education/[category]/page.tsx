@@ -10,7 +10,7 @@ import { Icon } from "@/components/icons"
 import { cn } from "@/lib/utils"
 import type { Course } from "@/lib/types"
 
-type CategoryId = "startup" | "ai" | "office"
+type CategoryId = "startup" | "ai" | "office" | "social"
 
 const META: Record<CategoryId, { label: string; desc: string; icon: React.ReactNode }> = {
   startup: {
@@ -27,6 +27,11 @@ const META: Record<CategoryId, { label: string; desc: string; icon: React.ReactN
     label: "Irodai készségek",
     desc: "Excel, Word és prezentáció a gyakorlatban.",
     icon: <Icon.office width={22} height={22} />,
+  },
+  social: {
+    label: "Közösségi média",
+    desc: "Facebook, Instagram és fizetett hirdetések a gyakorlatban.",
+    icon: <Icon.share width={22} height={22} />,
   },
 }
 

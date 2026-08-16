@@ -12,6 +12,7 @@ const NAV = [
   { href: "/app", label: "Áttekintés", icon: Icon.dashboard },
   { href: "/app/education", label: "Edukáció", icon: Icon.education },
   { href: "/app/website", label: "Online megjelenés", icon: Icon.globe },
+  { href: "/app/support", label: "Távoli segítség", icon: Icon.headset },
   { href: "/app/profile", label: "Vállalkozási profil", icon: Icon.profile },
 ]
 

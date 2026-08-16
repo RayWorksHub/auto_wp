@@ -6,7 +6,7 @@ import { ALL_COURSES } from "@/lib/seed"
 import { Reveal } from "@/components/reveal"
 import { Icon } from "@/components/icons"
 
-type CategoryId = "startup" | "ai" | "office"
+type CategoryId = "startup" | "ai" | "office" | "social"
 
 const CATEGORIES: {
   id: CategoryId
@@ -35,6 +35,13 @@ const CATEGORIES: {
     desc: "Excel, Word és prezentáció – gyakorlati digitális készségek.",
     color: "#0d9488",
     icon: (p) => <Icon.office {...p} />,
+  },
+  {
+    id: "social",
+    label: "Közösségi média",
+    desc: "Facebook, Instagram és hirdetések – jelenlét és ügyfélszerzés online.",
+    color: "#d6336c",
+    icon: (p) => <Icon.share {...p} />,
   },
 ]
 
@@ -85,7 +92,7 @@ export default function EducationPage() {
       </Reveal>
 
       {/* Category cards */}
-      <div className="mt-8 grid gap-6 md:grid-cols-3">
+      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {CATEGORIES.map((cat, i) => {
           const stats = statsFor(cat.id)
           return (
